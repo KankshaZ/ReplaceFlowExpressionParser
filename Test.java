@@ -12,86 +12,86 @@ import com.github.javaparser.ast.expr.*;
 
 public class Test {
 
-	public static void main(String args[]) throws FileNotFoundException, ParseException {
-		File folder = new File(System.getProperty("user.dir"));
-		File[] listOfFiles = folder.listFiles();
+    public static void main(String args[]) throws FileNotFoundException, ParseException {
+        File folder = new File(System.getProperty("user.dir"));
+        File[] listOfFiles = folder.listFiles();
 
-		for (File file : listOfFiles) {
-		    if (file.isFile()) {
-		        String name = file.getName();
-		        if(name.contains(".java")&&!name.contains("Test.java")){
-		        	System.out.println("NEW FILE:");
-		        	System.out.println(name);
-		        	parseFile(name);
-		        }
-		    }
-		}
-	}
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                String name = file.getName();
+                if(name.contains(".java")&&!name.contains("Test.java")){
+                    System.out.println("NEW FILE:");
+                    System.out.println(name);
+                    parseFile(name);
+                }
+            }
+        }
+    }
 
-	public static void parseFile(String fileLocation)throws FileNotFoundException, ParseException {
-		FileInputStream fileInputStream = new FileInputStream(fileLocation);
-		CompilationUnit compilationUnit = JavaParser.parse(fileInputStream);
+    public static void parseFile(String fileLocation)throws FileNotFoundException, ParseException {
+        FileInputStream fileInputStream = new FileInputStream(fileLocation);
+        CompilationUnit compilationUnit = JavaParser.parse(fileInputStream);
 
-		List<TypeDeclaration> typeDeclarations = compilationUnit.getTypes();
-	  	ClassOrInterfaceDeclaration classOrInterfaceDeclaration = new ClassOrInterfaceDeclaration();
+        List<TypeDeclaration> typeDeclarations = compilationUnit.getTypes();
+        ClassOrInterfaceDeclaration classOrInterfaceDeclaration = new ClassOrInterfaceDeclaration();
 
-	  	for (TypeDeclaration typeDeclaration : typeDeclarations) {
-			classOrInterfaceDeclaration = (ClassOrInterfaceDeclaration) typeDeclaration;
-			List<BodyDeclaration> bodyDeclarationList = classOrInterfaceDeclaration.getMembers();
-			
-			for (BodyDeclaration bodyDeclaration : bodyDeclarationList) {
-				
-				if (bodyDeclaration instanceof MethodDeclaration) {
-			    	MethodDeclaration methodDeclaration = (MethodDeclaration) bodyDeclaration;
-			    	System.out.println(methodDeclaration);
-			    	List<AnnotationExpr> methodAnno = methodDeclaration.getAnnotations();
-			    	if(!methodAnno.isEmpty())
-			    		printAnnotationAndType(methodAnno);
-			    	List<Parameter> tpList = methodDeclaration.getParameters();
-			    	/*System.out.println(tpList);*/
-			    	if(tpList!= null){
-			    		for(Parameter tp : tpList){
-			    			List<AnnotationExpr> annotations = tp.getAnnotations();
-			    			if(annotations!=null){
-			    				printAnnotationAndType(annotations);
-			    			}
-			    		}
-			    	}
-			    }
-			    else{
-				    /*System.out.println(bodyDeclaration);*/
-				    if(!bodyDeclaration.getAnnotations().isEmpty()){
-						System.out.println(bodyDeclaration.getAnnotations());
-						List<AnnotationExpr> annotations = bodyDeclaration.getAnnotations();
-						printAnnotationAndType(annotations);
-					}	
-			    }	
-			}
-		}	
-	}
+        for (TypeDeclaration typeDeclaration : typeDeclarations) {
+            classOrInterfaceDeclaration = (ClassOrInterfaceDeclaration) typeDeclaration;
+            List<BodyDeclaration> bodyDeclarationList = classOrInterfaceDeclaration.getMembers();
+            
+            for (BodyDeclaration bodyDeclaration : bodyDeclarationList) {
+                
+                if (bodyDeclaration instanceof MethodDeclaration) {
+                    MethodDeclaration methodDeclaration = (MethodDeclaration) bodyDeclaration;
+                    System.out.println(methodDeclaration);
+                    List<AnnotationExpr> methodAnno = methodDeclaration.getAnnotations();
+                    if(!methodAnno.isEmpty())
+                        printAnnotationAndType(methodAnno);
+                    List<Parameter> tpList = methodDeclaration.getParameters();
+                    /*System.out.println(tpList);*/
+                    if(tpList!= null){
+                        for(Parameter tp : tpList){
+                            List<AnnotationExpr> annotations = tp.getAnnotations();
+                            if(annotations!=null){
+                                printAnnotationAndType(annotations);
+                            }
+                        }
+                    }
+                }
+                else{
+                    /*System.out.println(bodyDeclaration);*/
+                    if(!bodyDeclaration.getAnnotations().isEmpty()){
+                        System.out.println(bodyDeclaration.getAnnotations());
+                        List<AnnotationExpr> annotations = bodyDeclaration.getAnnotations();
+                        printAnnotationAndType(annotations);
+                    }   
+                }   
+            }
+        }   
+    }
 
-	public static void printAnnotationAndType(List<AnnotationExpr> annotations){
-		for(AnnotationExpr aex : annotations)
-		{
-			System.out.println(aex.getClass());
-			if (aex.getClass().equals(SingleMemberAnnotationExpr.class)){
-				SingleMemberAnnotationExpr smae = (SingleMemberAnnotationExpr) aex;
-				Expression e  = smae.getMemberValue();
-				System.out.println(e + " " + e.getClass());
-				//As an alternative do this for every expression type
-				//if(e instanceof ThisExpr)
-				//	System.out.println("TRUE"); 
-			}
+    public static void printAnnotationAndType(List<AnnotationExpr> annotations){
+        for(AnnotationExpr aex : annotations)
+        {
+            System.out.println(aex.getClass());
+            if (aex.getClass().equals(SingleMemberAnnotationExpr.class)){
+                SingleMemberAnnotationExpr smae = (SingleMemberAnnotationExpr) aex;
+                Expression e  = smae.getMemberValue();
+                System.out.println(e + " " + e.getClass());
+                //As an alternative do this for every expression type
+                //if(e instanceof ThisExpr)
+                //  System.out.println("TRUE"); 
+            }
 
-			if (aex.getClass().equals(NormalAnnotationExpr.class)){
-				NormalAnnotationExpr nae = (NormalAnnotationExpr) aex;
-				List<MemberValuePair> mvp  = nae.getPairs();
-				System.out.println(mvp);
-			}
-			
-			System.out.println();
-		}
-	}
+            if (aex.getClass().equals(NormalAnnotationExpr.class)){
+                NormalAnnotationExpr nae = (NormalAnnotationExpr) aex;
+                List<MemberValuePair> mvp  = nae.getPairs();
+                System.out.println(mvp);
+            }
+            
+            System.out.println();
+        }
+    }
 
 }
 
