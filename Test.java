@@ -78,6 +78,9 @@ public class Test {
 				SingleMemberAnnotationExpr smae = (SingleMemberAnnotationExpr) aex;
 				Expression e  = smae.getMemberValue();
 				System.out.println(e + " " + e.getClass());
+				//As an alternative do this for every expression type
+				//if(e instanceof ThisExpr)
+				//	System.out.println("TRUE"); 
 			}
 
 			if (aex.getClass().equals(NormalAnnotationExpr.class)){
