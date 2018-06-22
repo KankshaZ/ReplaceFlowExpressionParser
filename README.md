@@ -1,7 +1,7 @@
 # ReplaceFlowExpressionParser: 
 Currently, the CheckerFramework uses Regex to parse for any expressions/arguments given to Annotations. However, to make it more generalizable and robust, an alternative using JavaParser is demonstrated here. 
   
-### Structure of repo: (regarding issue #)
+### Structure of repo: (regarding issue [CheckerFramework#1614](https://github.com/typetools/checker-framework/issues/1614))
 - Test.java : looks for all the .java files in the folder and identifies the type of Java Expression in annotation without the need for regex by making calls to Java Parser.
 - Anno.java: Lock checker example adapted from the CheckerFramework Manual.
 - AnnoWithoutQuotes.java: Same above example but the expressions inside the annotation is without quotes ( " ) .
@@ -74,7 +74,7 @@ In @Annotation(myClass.field), myClass.field is extracted evaluates to FieldAcce
     "this" class com.github.javaparser.ast.expr.StringLiteralExpr
 
 ### Inference: 
-The isXYZExpr() function ( present in the current Regex version of the checker framework source code for FlowExpressionParseUtil) is easy to replace by the JavaParser - the getClass method or checking using ‘instance of’ works. 
+The isXYZExpr() function ( present in the current Regex version of the checker framework source code for [FlowExpressionParseUtil](https://github.com/typetools/checker-framework/blob/8896e76f32d2a55acf8b08be952f26b12cdaf7a5/framework/src/main/java/org/checkerframework/framework/util/FlowExpressionParseUtil.java#L123)) is easy to replace by the JavaParser - the getClass method or checking using ‘instance of’ works. 
 
 __For each argument given to the Annotation, the above code will return the type of expression it is__
 
