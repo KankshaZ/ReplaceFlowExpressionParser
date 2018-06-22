@@ -2,8 +2,8 @@
 
 Command to run: 
 
-  javac Test.java
-  java Test
+    javac Test.java
+    java Test
   
 The Test.java file looks for all the .java files in the folder and identifies the type of Java Expression in annotation without the need for regex by making calls to Java Parser. There are two files inside - Anno.java and AnnoWithoutQuotes.java. Anno.java follows the rules present in the manual. AnnoWithoutQuotes.java has the same example and follows rules as well, but the expression inside the annotation is not within quotes.
 
